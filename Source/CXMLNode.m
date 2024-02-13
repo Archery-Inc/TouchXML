@@ -349,6 +349,10 @@ static int MyXmlOutputCloseCallback(void * context);
 //- (NSArray *)objectsForXQuery:(NSString *)xquery constants:(NSDictionary *)constants error:(NSError **)error;
 //- (NSArray *)objectsForXQuery:(NSString *)xquery error:(NSError **)error;
 
+- (void)detach
+{
+    xmlUnlinkNode(_node);
+}
 
 @end
 
