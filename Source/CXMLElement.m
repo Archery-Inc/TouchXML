@@ -241,6 +241,42 @@
     return nil;
 }
 
+- (void)removeAttributeForName:(NSString *)name
+{
+    NSRange split = [name rangeOfString:@":"];
+    
+    xmlChar *theLocalName = NULL;
+    xmlChar *thePrefix = NULL;
+    
+    if (split.length > 0)
+    {
+        theLocalName = (xmlChar *)[[name substringFromIndex:split.location + 1] UTF8String];
+        thePrefix = (xmlChar *)[[name substringToIndex:split.location] UTF8String];
+    }
+    else
+    {
+        theLocalName = (xmlChar *)[name UTF8String];
+    }
+    
+    xmlAttrPtr theCurrentNode = _node->properties;
+    while (theCurrentNode != NULL)
+    {
+        if (xmlStrcmp(theLocalName, theCurrentNode->name) == 0)
+        {
+            if (thePrefix == NULL || (theCurrentNode->ns
+                                      && theCurrentNode->ns->prefix
+                                      && xmlStrcmp(thePrefix, theCurrentNode->ns->prefix) == 0))
+            {
+                xmlUnlinkNode((xmlNodePtr)theCurrentNode);
+                xmlFreeNode((xmlNodePtr)theCurrentNode);
+                return;
+            }
+        }
+        theCurrentNode = theCurrentNode->next;
+    }
+    return NULL;
+}
+
 //- (NSString*)_XMLStringWithOptions:(NSUInteger)options appendingToString:(NSMutableString*)str
 //{
 //NSString* name = [self name];
