@@ -277,6 +277,11 @@
     return NULL;
 }
 
+- (void)addAttribute:(CXMLNode *)attrNode
+{
+    xmlAddChild(_node, attrNode->_node);
+}
+
 //- (NSString*)_XMLStringWithOptions:(NSUInteger)options appendingToString:(NSMutableString*)str
 //{
 //NSString* name = [self name];

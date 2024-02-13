@@ -49,6 +49,7 @@
 - (NSString *)resolvePrefixForNamespaceURI:(NSString *)namespaceURI;
 
 - (void)removeAttributeForName:(NSString *)name;
+- (void)addAttribute:(CXMLNode *)name;
 
 //- (NSString*)_XMLStringWithOptions:(NSUInteger)options appendingToString:(NSMutableString*)str;
 @end
