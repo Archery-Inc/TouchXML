@@ -1,0 +1,1 @@
+../CXMLNamespaceNode.h
