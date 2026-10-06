@@ -29,9 +29,9 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "CXMLDocument_CreationExtensions.h"
+#import <TouchXML/CXMLDocument_CreationExtensions.h>
 
-#import "CXMLElement.h"
+#import <TouchXML/CXMLElement.h>
 #import "CXMLNode_PrivateExtensions.h"
 #import "CXMLDocument_PrivateExtensions.h"
 

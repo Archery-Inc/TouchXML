@@ -44,7 +44,7 @@ TouchXML is a libxml API wrapper written in Objective-C and usually helps with a
 
 4. Import TouchXML to your project
 
-		#import "TouchXML.h"
+		#import <TouchXML/TouchXML.h>
 
 	That is all the “magic” and you’re good to go. Since, I am not going to write about actually using TouchXML, you can see a nice working example in my [previous post][2].
 

@@ -29,12 +29,12 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "CXMLDocument.h"
-#import "CXMLDocument_CreationExtensions.h"
-#import "CXMLElement.h"
-#import "CXMLElement_CreationExtensions.h"
-#import "CXMLElement_ElementTreeExtensions.h"
-#import "CXMLNode.h"
-#import "CXMLNode_CreationExtensions.h"
-#import "CXMLNode_XPathExtensions.h"
-#import "CXMLUnsupportedNode.h"
+#import <TouchXML/CXMLDocument.h>
+#import <TouchXML/CXMLDocument_CreationExtensions.h>
+#import <TouchXML/CXMLElement.h>
+#import <TouchXML/CXMLElement_CreationExtensions.h>
+#import <TouchXML/CXMLElement_ElementTreeExtensions.h>
+#import <TouchXML/CXMLNode.h>
+#import <TouchXML/CXMLNode_CreationExtensions.h>
+#import <TouchXML/CXMLNode_XPathExtensions.h>
+#import <TouchXML/CXMLUnsupportedNode.h>

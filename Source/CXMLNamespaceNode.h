@@ -30,8 +30,8 @@
 //  or implied, of toxicsoftware.com.
 
 #import <Foundation/Foundation.h>
-#import "CXMLNode.h"
-#import "CXMLElement.h"
+#import <TouchXML/CXMLNode.h>
+#import <TouchXML/CXMLElement.h>
 
 @interface CXMLNamespaceNode : CXMLNode {
 
