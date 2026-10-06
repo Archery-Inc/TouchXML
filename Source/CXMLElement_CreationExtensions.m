@@ -31,6 +31,26 @@
 
 #import "CXMLElement_CreationExtensions.h"
 
+#import "CXMLNode_PrivateExtensions.h"
+#import "CXMLDocument_PrivateExtensions.h"
+
+// Removes every cached Objective-C wrapper for the subtree rooted at inNode from inNodePool and clear the corresponding back-pointers.
+static void CXMLElementEvictSubtreeNodePoolEntries(struct _xmlNode *inNode, NSMutableSet *inNodePool)
+{
+    for (struct _xmlNode *theCurrentNode = inNode; theCurrentNode != NULL; theCurrentNode = theCurrentNode->next)
+    {
+        if (theCurrentNode->_private != NULL)
+        {
+            [inNodePool removeObject:(__bridge id)theCurrentNode->_private];
+            theCurrentNode->_private = NULL;
+        }
+        if (theCurrentNode->children != NULL)
+        {
+            CXMLElementEvictSubtreeNodePoolEntries(theCurrentNode->children, inNodePool);
+        }
+    }
+}
+
 @implementation CXMLElement (CXMLElement_CreationExtensions)
 
 - (void)addChild:(CXMLNode *)inNode
@@ -43,15 +63,48 @@ xmlAddChild(self->_node, inNode->_node);
 inNode->_freeNodeOnRelease = NO;
 }
 
-- (void)removeChildAtIndex:(NSUInteger)index
+- (CXMLNode *)removeChildAtIndex:(NSUInteger)index
 {
-	NSUInteger i = 0;
-	struct _xmlNode *child = _node->children;
-	while (i++ < index) {
-		child = child->next;
-	}
-	xmlUnlinkNode(child);
-	xmlFreeNode(child); /* Not certain… */
+    NSAssert(self->_node != NULL, @"_node should not be null");
+
+    /* Find the child at the given index. */
+    NSUInteger i = 0;
+    struct _xmlNode *child = _node->children;
+    while (i++ < index && child != NULL) {
+        child = child->next;
+    }
+    if (child == NULL) {
+        return nil;
+    }
+
+    // Reuse the wrapper cached for this node (if any) so that callers already
+    // holding it keep a valid object and only one wrapper ever owns the node.
+    CXMLNode *theWrapper = (__bridge CXMLNode *)child->_private;
+
+    xmlDocPtr theDocumentNode = child->doc;
+    xmlUnlinkNode(child);
+
+    // Detach every cached wrapper for the removed subtree from its document so
+    // the document no longer retains nodes it does not own.
+    if (theDocumentNode != NULL) {
+        CXMLDocument *theDocumentObject = (__bridge CXMLDocument *)theDocumentNode->_private;
+        if (theDocumentObject != nil) {
+            if (theWrapper != nil) {
+                [theDocumentObject.nodePool removeObject:theWrapper];
+            }
+            CXMLElementEvictSubtreeNodePoolEntries(child->children, theDocumentObject.nodePool);
+        }
+    }
+
+    // Transfer ownership of the unlinked subtree to the wrapper
+    if (theWrapper == nil) {
+        Class theClass = [CXMLNode nodeClassForLibXMLNode:child];
+        theWrapper = [[theClass alloc] initWithLibXMLNode:child freeOnDealloc:YES];
+        child->_private = (__bridge void *)theWrapper;
+    }
+    theWrapper->_freeNodeOnRelease = YES;
+
+    return theWrapper;
 }
 
 - (void)addNamespace:(CXMLNode *)inNamespace

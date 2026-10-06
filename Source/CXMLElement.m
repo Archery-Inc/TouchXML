@@ -32,6 +32,7 @@
 #import "CXMLElement.h"
 
 #import "CXMLNode_PrivateExtensions.h"
+#import "CXMLDocument_PrivateExtensions.h"
 #import "CXMLNode_CreationExtensions.h"
 #import "CXMLNamespaceNode.h"
 
@@ -241,7 +242,7 @@
     return nil;
 }
 
-- (void)removeAttributeForName:(NSString *)name
+- (CXMLNode *)removeAttributeForName:(NSString *)name
 {
     NSRange split = [name rangeOfString:@":"];
     
@@ -267,14 +268,36 @@
                                       && theCurrentNode->ns->prefix
                                       && xmlStrcmp(thePrefix, theCurrentNode->ns->prefix) == 0))
             {
+                // Reuse the wrapper cached for this attribute (if any) so that
+                // callers already holding it keep a valid object.
+                CXMLNode *theWrapper = (__bridge CXMLNode *)theCurrentNode->_private;
+                xmlDocPtr theDocumentNode = theCurrentNode->doc;
+
                 xmlUnlinkNode((xmlNodePtr)theCurrentNode);
-                xmlFreeNode((xmlNodePtr)theCurrentNode);
-                return;
+
+                // Remove the wrapper from the document.
+                if (theDocumentNode != NULL && theWrapper != nil)
+                {
+                    CXMLDocument *theDocumentObject = (__bridge CXMLDocument *)theDocumentNode->_private;
+                    [theDocumentObject.nodePool removeObject:theWrapper];
+                }
+
+                // Transfer ownership of the unlinked attribute to the wrapper:
+                // it frees the libxml node on dealloc instead of freeing it
+                // here, where other wrappers could still reference it.
+                if (theWrapper == nil)
+                {
+                    theWrapper = [[CXMLNode alloc] initWithLibXMLNode:(xmlNodePtr)theCurrentNode freeOnDealloc:YES];
+                    theCurrentNode->_private = (__bridge void *)theWrapper;
+                }
+                theWrapper->_freeNodeOnRelease = YES;
+
+                return theWrapper;
             }
         }
         theCurrentNode = theCurrentNode->next;
     }
-    return NULL;
+    return nil;
 }
 
 - (void)addAttribute:(CXMLNode *)attrNode

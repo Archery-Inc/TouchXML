@@ -48,7 +48,8 @@
 - (CXMLNode *)resolveNamespaceForName:(NSString *)name;
 - (NSString *)resolvePrefixForNamespaceURI:(NSString *)namespaceURI;
 
-- (void)removeAttributeForName:(NSString *)name;
+// Returns the removed attribute.
+- (CXMLNode *)removeAttributeForName:(NSString *)name;
 - (void)addAttribute:(CXMLNode *)name;
 
 //- (NSString*)_XMLStringWithOptions:(NSUInteger)options appendingToString:(NSMutableString*)str;
