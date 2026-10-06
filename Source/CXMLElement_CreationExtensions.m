@@ -43,6 +43,17 @@ xmlAddChild(self->_node, inNode->_node);
 inNode->_freeNodeOnRelease = NO;
 }
 
+- (void)removeChildAtIndex:(NSUInteger)index
+{
+	NSUInteger i = 0;
+	struct _xmlNode *child = _node->children;
+	while (i++ < index) {
+		child = child->next;
+	}
+	xmlUnlinkNode(child);
+	xmlFreeNode(child); /* Not certain… */
+}
+
 - (void)addNamespace:(CXMLNode *)inNamespace
 {
 xmlSetNs(self->_node, (xmlNsPtr)inNamespace->_node);
