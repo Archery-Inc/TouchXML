@@ -31,10 +31,10 @@
 
 #import "CXMLElement.h"
 
-#import "CXMLNode_PrivateExtensions.h"
-#import "CXMLDocument_PrivateExtensions.h"
-#import "CXMLNode_CreationExtensions.h"
-#import "CXMLNamespaceNode.h"
+#import <TouchXML/CXMLNode_PrivateExtensions.h>
+#import <TouchXML/CXMLDocument_PrivateExtensions.h>
+#import <TouchXML/CXMLNode_CreationExtensions.h>
+#import <TouchXML/CXMLNamespaceNode.h>
 
 @implementation CXMLElement
 

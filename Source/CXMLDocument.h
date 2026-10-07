@@ -29,7 +29,7 @@
 //  authors and should not be interpreted as representing official policies, either expressed
 //  or implied, of toxicsoftware.com.
 
-#import "CXMLNode.h"
+#import <TouchXML/CXMLNode.h>
 
 /*
  Tidy is disabled by default. In order to enable it correctly you need to:

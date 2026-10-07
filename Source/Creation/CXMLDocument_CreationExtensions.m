@@ -32,8 +32,8 @@
 #import <TouchXML/CXMLDocument_CreationExtensions.h>
 
 #import <TouchXML/CXMLElement.h>
-#import "CXMLNode_PrivateExtensions.h"
-#import "CXMLDocument_PrivateExtensions.h"
+#import <TouchXML/CXMLNode_PrivateExtensions.h>
+#import <TouchXML/CXMLDocument_PrivateExtensions.h>
 
 @implementation CXMLDocument (CXMLDocument_CreationExtensions)
 

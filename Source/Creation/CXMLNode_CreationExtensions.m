@@ -33,9 +33,9 @@
 
 #import <TouchXML/CXMLDocument.h>
 #import <TouchXML/CXMLElement.h>
-#import "CXMLNode_PrivateExtensions.h"
-#import "CXMLDocument_PrivateExtensions.h"
-#import "CXMLNamespaceNode.h"
+#import <TouchXML/CXMLNode_PrivateExtensions.h>
+#import <TouchXML/CXMLDocument_PrivateExtensions.h>
+#import <TouchXML/CXMLNamespaceNode.h>
 
 @implementation CXMLNode (CXMLNode_CreationExtensions)
 

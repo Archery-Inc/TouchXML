@@ -31,10 +31,10 @@
 
 #import "CXMLNode.h"
 
-#import "CXMLNode_PrivateExtensions.h"
-#import "CXMLDocument.h"
-#import "CXMLElement.h"
-#import "CXMLNode_CreationExtensions.h"
+#import <TouchXML/CXMLNode_PrivateExtensions.h>
+#import <TouchXML/CXMLDocument.h>
+#import <TouchXML/CXMLElement.h>
+#import <TouchXML/CXMLNode_CreationExtensions.h>
 
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
@@ -146,7 +146,7 @@ static int MyXmlOutputCloseCallback(void * context);
 {
     NSAssert(_node != NULL, @"CXMLNode does not have attached libxml2 _node.");
     
-    if (_node->type == CXMLAttributeKind)
+    if (_node->type == (xmlElementType)CXMLAttributeKind)
         return 0; // NSXMLNodes of type NSXMLAttributeKind can't have children
     
     xmlNodePtr theCurrentNode = _node->children;
@@ -162,7 +162,7 @@ static int MyXmlOutputCloseCallback(void * context);
     
     NSMutableArray *theChildren = [NSMutableArray array];
     
-    if (_node->type != CXMLAttributeKind) // NSXML Attribs don't have children.
+    if (_node->type != (xmlElementType)CXMLAttributeKind) // NSXML Attribs don't have children.
     {
         xmlNodePtr theCurrentNode = _node->children;
         while (theCurrentNode != NULL)

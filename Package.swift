@@ -8,7 +8,7 @@ let package = Package(
     targets: [
         .target(
             name: "TouchXML", path: "Source",
-            publicHeadersPath: "z-include", cSettings: [.headerSearchPath("z-include"), .headerSearchPath("z-include-private")],
+            publicHeadersPath: "include", cSettings: [.headerSearchPath("include"), .headerSearchPath("PrivateHeaders")],
             linkerSettings: [.linkedLibrary("xml2")],
         )
     ]

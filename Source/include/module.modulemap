@@ -1,0 +1,4 @@
+module TouchXML {
+	header "TouchXML/TouchXML.h"
+	export *
+}

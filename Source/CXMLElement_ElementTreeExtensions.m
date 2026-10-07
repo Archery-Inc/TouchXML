@@ -31,8 +31,8 @@
 
 #import "CXMLElement_ElementTreeExtensions.h"
 
-#import "CXMLElement_CreationExtensions.h"
-#import "CXMLNode_CreationExtensions.h"
+#import <TouchXML/CXMLElement_CreationExtensions.h>
+#import <TouchXML/CXMLNode_CreationExtensions.h>
 
 @implementation CXMLElement (CXMLElement_ElementTreeExtensions)
 
